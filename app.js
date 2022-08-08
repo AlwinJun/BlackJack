@@ -1,43 +1,57 @@
-/*let firstCard = 10
-let secondCard = 4
-let sum = firstCard + secondCard
-let hasBlackJack = false
-let isAlive = true
-let message = ""
-let messageEl = document.getElementById("message-el")
-let sumEl = document.getElementById("sum-el")
-let cardsEl = document.getElementById("cards-el")
+let firstCard = getRandomNum();
+let secondCard = getRandomNum();
+let arrCard = [firstCard, secondCard];
+let sum = firstCard + secondCard;
+let hasBlackJack = false;
+let isAlive = true;
+let message = '';
+const messageEl = document.getElementById('message-el');
+const sumEl = document.getElementById('sum-el');
+const cardsEl = document.getElementById('cards-el');
+
+//Generate whole random number from 1-10
+function getRandomNum() {
+  let number = Math.floor(Math.random() * 10 + 1);
+  return number;
+}
 
 function startGame() {
-    renderGame()
+  renderGame();
 }
 
 function renderGame() {
-    // render out firstCard and secondCard
-    cardsEl.textContent = "Cards: " + firstCard + " " + secondCard
-    // render out ALL the cards we have
-    sumEl.textContent = "Sum: " + sum
-    if (sum <= 20) {
-        message = "Do you want to draw a new card?"
-    } else if (sum === 21) {
-        message = "You've got Blackjack!"
-        hasBlackJack = true
-    } else {
-        message = "You're out of the game!"
-        isAlive = false
-    }
-    messageEl.textContent = message
+  cardsEl.textContent = 'Cards: ';
+
+  // Render out 2 cards & 3rd card if the user draw another card
+  for (let i = 0; i < arrCard.length; i++) {
+    cardsEl.textContent += arrCard[i] + ' ';
+  }
+
+  //Render out ALL the cards we have
+  sumEl.textContent = 'Sum: ' + sum;
+  if (sum <= 20) {
+    message = 'Do you want to draw a new card?';
+  } else if (sum === 21) {
+    message = "You've got Blackjack!";
+    hasBlackJack = true;
+  } else {
+    message = "You're out of the game!";
+    isAlive = false;
+
+    // if (isAlive == false) {
+    //   cardsEl.textContent = null;
+    //   sumEl.textContent = ' ';
+    //   sum = 0;
+    // }
+  }
+  messageEl.textContent = message;
 }
 
-
 function newCard() {
-    let card = 6
-    sum += card
-    renderGame()
-}*/
-let me = ['Alwin', 19, true];;
+  let thirdCard = getRandomNum();
+  arrCard.push(thirdCard);
+  sum += thirdCard;
 
-// Push the newMessage to the messages array, and then log out the array
-
-let messages = [tnewMessage = 'Same here!';''m;essages.push(newMessage);
-'';;
+  //console.log(arrCard);
+  renderGame();
+}

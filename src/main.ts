@@ -1,80 +1,76 @@
 import './style.css';
-let arrCard = [];
-let sum = 0;
-let hasBlackJack = false;
-let isAlive = false;
-let message = '';
-const messageEl = document.getElementById('message-el');
-const sumEl = document.getElementById('sum-el');
-const cardsEl = document.getElementById('cards-el');
 
-//Generate whole random number from 1-10
-function getRandomNum() {
-  let number = Math.floor(Math.random() * 13 + 1);
+// DOM
+const startBtn = document.querySelector('.btn-start') as HTMLButtonElement;
+const newCardBtn = document.querySelector('.btn-new') as HTMLButtonElement;
+const messageEl = document.getElementById('message-el') as HTMLParagraphElement;
+const sumEl = document.getElementById('sum-el') as HTMLParagraphElement;
+const cardsEl = document.getElementById('cards-el') as HTMLParagraphElement;
+const playerInfo = document.querySelector('#player-info') as HTMLParagraphElement;
 
-  if (number > 10) {
-    //return 10 if number value is 11,12,13
-    return 10;
-  } else if (number === 1) {
-    //retrn 11 if number is equal to 1
-    return 11;
-  } else {
-    return number;
-  }
-}
-function startGame() {
-  isAlive = true;
-  let firstCard = getRandomNum();
-  let secondCard = getRandomNum();
-  arrCard = [firstCard, secondCard];
-  sum = firstCard + secondCard;
+let arrCard: number[] = [];
+let sum: number = 0;
+let hasBlackJack: boolean = false;
+let isAlive: boolean = false;
 
-  renderGame();
+interface Player {
+  user: string;
+  money: number;
 }
 
-function renderGame() {
-  cardsEl.textContent = 'Cards: ';
-  // Render out 2 cards & 3rd card if the user draw another card
-  for (let i = 0; i < arrCard.length; i++) {
-    cardsEl.textContent += arrCard[i] + ' ';
-  }
-
-  //Render out ALL the cards we have
-  sumEl.textContent = 'Sum: ' + sum;
-
-  if (sum <= 20) {
-    message = 'Do you want to draw a new card?';
-  } else if (sum === 21) {
-    message = "You've got Blackjack!";
-    hasBlackJack = true;
-    //Prevent user from getting new cards
-    if (hasBlackJack === true) {
-      isAlive = false;
-    }
-  } else {
-    message = "You're out of the game!";
-    isAlive = false;
-  }
-  messageEl.textContent = message;
-}
-
-function newCards() {
-  //if player starts and still in game rin function
-  if (isAlive === true) {
-    let newCard = getRandomNum();
-    arrCard.push(newCard);
-    sum += newCard;
-
-    //console.log(arrCard);
-    renderGame();
-  }
-}
-
-const playerInfo = document.querySelector('#player-info');
-const player = {
+const player: Player = {
   user: 'Alwin',
   money: 150,
 };
 
 playerInfo.textContent = `${player.user} : $${player.money}`;
+
+const getRandomNum = (): number => {
+  const number: number = Math.floor(Math.random() * 13 + 1);
+
+  return number > 10 ? 10 : number === 1 ? 11 : number;
+};
+
+const startGame = (): void => {
+  isAlive = true;
+  const [firstCard, secondCard] = [getRandomNum(), getRandomNum()];
+  arrCard = [firstCard, secondCard];
+  sum = firstCard + secondCard;
+
+  renderGame();
+};
+
+const renderGame = (): void => {
+  cardsEl.textContent = `Cards: ${arrCard.join(' ')}`;
+
+  sumEl.textContent = `Sum: ${sum}`;
+
+  switch (true) {
+    case sum <= 20:
+      messageEl.textContent = 'Do you want to draw a new card?';
+      break;
+    case sum === 21:
+      messageEl.textContent = "You've got Blackjack!";
+      hasBlackJack = true;
+      isAlive = false; // No need to check if hasBlackJack is true, just assign false directly
+      break;
+    default:
+      messageEl.textContent = "You're out of the game!";
+      isAlive = false;
+      break;
+  }
+};
+
+function newCards() {
+  if (isAlive === true) {
+    let newCard: number = getRandomNum();
+    arrCard.push(newCard);
+    sum += newCard;
+
+    renderGame();
+  }
+}
+
+startBtn.addEventListener('click', startGame);
+newCardBtn.addEventListener('click', newCards);
 

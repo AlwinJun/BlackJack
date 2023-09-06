@@ -1,3 +1,4 @@
+import './style.css';
 let arrCard = [];
 let sum = 0;
 let hasBlackJack = false;
@@ -76,3 +77,4 @@ const player = {
 };
 
 playerInfo.textContent = `${player.user} : $${player.money}`;
+
